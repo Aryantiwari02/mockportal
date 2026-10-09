@@ -185,6 +185,10 @@
   border-bottom: 1px solid var(--clr-border-lt);
 }
 
+.home-page .filter-tabs {
+  justify-content: center;
+}
+
 /* ── Service Cards ── */
 .service-grid {
   display: grid;
