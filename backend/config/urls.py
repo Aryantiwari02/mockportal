@@ -10,11 +10,23 @@ from applications.views import (
     mark_all_notifications_read,
     mark_notification_read,
 )
-from schemes.views import api_status, scheme_detail, scheme_list
+from schemes.views import (
+    api_status,
+    health_check,
+    robots_txt,
+    root_landing,
+    scheme_detail,
+    scheme_list,
+)
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+
+    # Landing page, health probe and robots (avoid a bare 404 at the root)
+    path("", root_landing),
+    path("health/", health_check),
+    path("robots.txt", robots_txt),
 
     # General API
     path("api/status/", api_status),
