@@ -1,0 +1,416 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Government Yojana Portal — YojanaSaathi AI Agent API",
+    "version": "1.0.0",
+    "description": "Secure machine-to-machine REST API enabling the remote YojanaSaathi AI Agent to discover government welfare schemes, retrieve requirements and eligibility rules, assist citizens with draft applications, and track verification statuses through short-lived citizen consent delegation.",
+    "contact": {
+      "name": "YojanaSaathi Engineering Team",
+      "url": "https://yojanasaathi.gov.in"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.yojanasaathi.gov.in/api/agent/v1",
+      "description": "Production HTTPS Base URL"
+    },
+    {
+      "url": "http://127.0.0.1:8000/api/agent/v1",
+      "description": "Local Development Server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "AgentApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Agent-API-Key",
+        "description": "Cryptographically strong machine-to-machine Agent API key identifying the YojanaSaathi service."
+      },
+      "CitizenDelegationTokenAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Citizen-Delegation-Token",
+        "description": "Short-lived, scoped delegation token granted by a citizen after verified OTP authentication."
+      }
+    },
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": { "type": "string", "example": "Invalid or revoked Agent API Key." },
+          "code": { "type": "string", "example": "AGENT_AUTHENTICATION_REQUIRED" }
+        },
+        "required": ["error", "code"]
+      },
+      "SchemeSummary": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "health-001" },
+          "category": { "type": "string", "example": "Health" },
+          "title": { "type": "string", "example": "Ayushman Bharat PM-JAY" },
+          "short_description": { "type": "string", "example": "Comprehensive health protection coverage up to ₹5 lakh per family." },
+          "benefits": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": ["Cashless treatment up to 5 Lakhs", "Secondary and tertiary care hospitalization"]
+          },
+          "eligibility": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": ["Families identified in SECC 2011", "Rural households in specified deprivation categories"]
+          },
+          "updated_at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "SchemeDetail": {
+        "allOf": [
+          { "$ref": "#/components/schemas/SchemeSummary" },
+          {
+            "type": "object",
+            "properties": {
+              "description": { "type": "string" },
+              "documents": { "type": "array", "items": { "type": "string" } },
+              "eligibility_rules": { "type": "object" },
+              "application_fields": { "type": "array", "items": { "type": "object" } },
+              "application_process": { "type": "array", "items": { "type": "string" } },
+              "translations": { "type": "object" }
+            }
+          }
+        ]
+      },
+      "SchemeRequirements": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "health-001" },
+          "title": { "type": "string", "example": "Ayushman Bharat PM-JAY" },
+          "category": { "type": "string", "example": "Health" },
+          "application_fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string", "example": "full_name" },
+                "label": { "type": "string", "example": "Full Name" },
+                "type": { "type": "string", "example": "text" },
+                "required": { "type": "boolean", "example": true }
+              }
+            }
+          },
+          "required_documents": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": ["Aadhaar Card", "Ration Card", "Income Certificate"]
+          }
+        }
+      },
+      "SchemeEligibility": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "health-001" },
+          "title": { "type": "string", "example": "Ayushman Bharat PM-JAY" },
+          "category": { "type": "string", "example": "Health" },
+          "eligibility_criteria": { "type": "array", "items": { "type": "string" } },
+          "eligibility_rules": {
+            "type": "object",
+            "example": { "max_income": 300000, "resident": true }
+          },
+          "application_process": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": ["Step 1: Check eligibility", "Step 2: Complete citizen draft", "Step 3: Upload documents", "Step 4: Official submission"]
+          }
+        }
+      },
+      "DraftApplicationRequest": {
+        "type": "object",
+        "required": ["scheme_id"],
+        "properties": {
+          "scheme_id": { "type": "string", "example": "health-001" },
+          "form_data": {
+            "type": "object",
+            "example": {
+              "full_name": "Ramesh Patel",
+              "annual_income": "240000",
+              "district": "Bengaluru Urban"
+            }
+          }
+        }
+      },
+      "ApplicationDetail": {
+        "type": "object",
+        "properties": {
+          "application_number": { "type": "string", "example": "YJS-A1B2C3D4E5" },
+          "scheme_id": { "type": "string", "example": "health-001" },
+          "scheme_title": { "type": "string", "example": "Ayushman Bharat PM-JAY" },
+          "scheme_category": { "type": "string", "example": "Health" },
+          "form_data": { "type": "object" },
+          "status": { "type": "string", "enum": ["DRAFT", "SUBMITTED", "UNDER_REVIEW", "APPROVED", "REJECTED", "CORRECTION_REQUIRED"], "example": "DRAFT" },
+          "status_label": { "type": "string", "example": "Draft" },
+          "next_step": { "type": "string", "example": "Complete your application form and upload the required documents, then submit." },
+          "submitted_at": { "type": "string", "format": "date-time", "nullable": true },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" },
+          "documents_count": { "type": "integer", "example": 2 },
+          "verified_documents_count": { "type": "integer", "example": 1 },
+          "total_required_documents_count": { "type": "integer", "example": 3 },
+          "all_documents_verified": { "type": "boolean", "example": false }
+        }
+      },
+      "DocumentVerificationItem": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "document_type": { "type": "string", "example": "Aadhaar Card" },
+          "file_name": { "type": "string", "example": "aadhaar.pdf" },
+          "file_size": { "type": "integer", "example": 1048576 },
+          "verification_status": { "type": "string", "enum": ["UPLOADED", "UNDER_REVIEW", "VERIFIED", "REJECTED", "CORRECTION_REQUIRED"], "example": "VERIFIED" },
+          "remarks": { "type": "string", "example": "Document clear and authentic." },
+          "uploaded_at": { "type": "string", "format": "date-time" },
+          "verified_at": { "type": "string", "format": "date-time", "nullable": true }
+        }
+      },
+      "ApplicationHistory": {
+        "type": "object",
+        "properties": {
+          "application_number": { "type": "string", "example": "YJS-A1B2C3D4E5" },
+          "scheme_id": { "type": "string", "example": "health-001" },
+          "scheme_title": { "type": "string", "example": "Ayushman Bharat PM-JAY" },
+          "current_status": { "type": "string", "example": "SUBMITTED" },
+          "status_label": { "type": "string", "example": "Submitted" },
+          "next_step": { "type": "string", "example": "Your application has been received and is awaiting review." },
+          "created_at": { "type": "string", "format": "date-time" },
+          "submitted_at": { "type": "string", "format": "date-time", "nullable": true },
+          "updated_at": { "type": "string", "format": "date-time" },
+          "documents_summary": {
+            "type": "object",
+            "properties": {
+              "total_uploaded": { "type": "integer", "example": 3 },
+              "verified": { "type": "integer", "example": 2 },
+              "required": { "type": "integer", "example": 3 },
+              "all_verified": { "type": "boolean", "example": false }
+            }
+          },
+          "lifecycle_events": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/NotificationItem" }
+          }
+        }
+      },
+      "NotificationItem": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "application_number": { "type": "string", "nullable": true, "example": "YJS-A1B2C3D4E5" },
+          "title": { "type": "string", "example": "Document Verified" },
+          "message": { "type": "string", "example": "Your Aadhaar Card has been verified." },
+          "type": { "type": "string", "example": "document_verified" },
+          "is_read": { "type": "boolean", "example": true },
+          "created_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/schemes/": {
+      "get": {
+        "summary": "List and Search Government Schemes",
+        "description": "Lists all available government welfare schemes. Supports text search across titles and descriptions and filtering by category.",
+        "security": [{ "AgentApiKeyAuth": [] }],
+        "parameters": [
+          { "name": "q", "in": "query", "schema": { "type": "string" }, "description": "Search keyword" },
+          { "name": "category", "in": "query", "schema": { "type": "string" }, "description": "Filter by scheme category (e.g. Health, Pension)" }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of schemes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": { "type": "integer", "example": 2 },
+                    "results": { "type": "array", "items": { "$ref": "#/components/schemas/SchemeSummary" } }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Missing or invalid Agent API Key", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorResponse" } } } }
+        }
+      }
+    },
+    "/schemes/{scheme_id}/": {
+      "get": {
+        "summary": "Retrieve Complete Scheme Details",
+        "security": [{ "AgentApiKeyAuth": [] }],
+        "parameters": [
+          { "name": "scheme_id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Complete scheme details", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SchemeDetail" } } } },
+          "404": { "description": "Scheme not found" }
+        }
+      }
+    },
+    "/schemes/{scheme_id}/requirements/": {
+      "get": {
+        "summary": "Retrieve Scheme Application Fields and Required Documents",
+        "security": [{ "AgentApiKeyAuth": [] }],
+        "parameters": [
+          { "name": "scheme_id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Form fields and required documents", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SchemeRequirements" } } } },
+          "404": { "description": "Scheme not found" }
+        }
+      }
+    },
+    "/schemes/{scheme_id}/eligibility/": {
+      "get": {
+        "summary": "Retrieve Scheme Eligibility Rules and Application Instructions",
+        "security": [{ "AgentApiKeyAuth": [] }],
+        "parameters": [
+          { "name": "scheme_id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Eligibility criteria, rules, and steps", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SchemeEligibility" } } } },
+          "404": { "description": "Scheme not found" }
+        }
+      }
+    },
+    "/citizen/applications/draft/": {
+      "post": {
+        "summary": "Create or Update Citizen Draft Application",
+        "description": "Creates a draft application or updates an existing draft for the delegated citizen. The agent cannot submit the application or transition it away from DRAFT status.",
+        "security": [
+          { "AgentApiKeyAuth": [], "CitizenDelegationTokenAuth": [] }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DraftApplicationRequest" } } }
+        },
+        "responses": {
+          "200": { "description": "Draft application updated" },
+          "201": { "description": "Draft application created" },
+          "400": { "description": "Invalid input or missing scheme_id" },
+          "403": { "description": "Missing or invalid Citizen Delegation Token" }
+        }
+      }
+    },
+    "/citizen/applications/": {
+      "get": {
+        "summary": "Retrieve Citizen Applications and Statuses",
+        "description": "Lists all applications and high-level tracking statuses belonging to the delegated citizen.",
+        "security": [
+          { "AgentApiKeyAuth": [], "CitizenDelegationTokenAuth": [] }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of citizen applications",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": { "type": "integer" },
+                    "citizen_mobile": { "type": "string", "example": "XXXXXX8792" },
+                    "results": { "type": "array", "items": { "$ref": "#/components/schemas/ApplicationDetail" } }
+                  }
+                }
+              }
+            }
+          },
+          "403": { "description": "Missing or invalid Citizen Delegation Token" }
+        }
+      }
+    },
+    "/citizen/applications/{application_number}/": {
+      "get": {
+        "summary": "Retrieve Specific Citizen Application Detail",
+        "security": [
+          { "AgentApiKeyAuth": [], "CitizenDelegationTokenAuth": [] }
+        ],
+        "parameters": [
+          { "name": "application_number", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Application details", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ApplicationDetail" } } } },
+          "404": { "description": "Application not found or not owned by delegated citizen" }
+        }
+      }
+    },
+    "/citizen/applications/{application_number}/documents/": {
+      "get": {
+        "summary": "Retrieve Document Verification Statuses",
+        "description": "Returns verification status for all uploaded documents for this application. Never exposes raw download URLs or binary files to the agent.",
+        "security": [
+          { "AgentApiKeyAuth": [], "CitizenDelegationTokenAuth": [] }
+        ],
+        "parameters": [
+          { "name": "application_number", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Document verification statuses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "application_number": { "type": "string" },
+                    "total_documents": { "type": "integer" },
+                    "verified_documents": { "type": "integer" },
+                    "results": { "type": "array", "items": { "$ref": "#/components/schemas/DocumentVerificationItem" } }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Application not found or not owned by citizen" }
+        }
+      }
+    },
+    "/citizen/applications/{application_number}/history/": {
+      "get": {
+        "summary": "Retrieve Application Lifecycle History and Audit Events",
+        "security": [
+          { "AgentApiKeyAuth": [], "CitizenDelegationTokenAuth": [] }
+        ],
+        "parameters": [
+          { "name": "application_number", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Application history and events", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ApplicationHistory" } } } },
+          "404": { "description": "Application not found or not owned by citizen" }
+        }
+      }
+    },
+    "/citizen/notifications/": {
+      "get": {
+        "summary": "Retrieve Notifications for Delegated Citizen",
+        "security": [
+          { "AgentApiKeyAuth": [], "CitizenDelegationTokenAuth": [] }
+        ],
+        "responses": {
+          "200": {
+            "description": "Citizen notifications",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": { "type": "integer" },
+                    "unread_count": { "type": "integer" },
+                    "results": { "type": "array", "items": { "$ref": "#/components/schemas/NotificationItem" } }
+                  }
+                }
+              }
+            }
+          },
+          "403": { "description": "Missing or invalid Citizen Delegation Token" }
+        }
+      }
+    }
+  }
+}

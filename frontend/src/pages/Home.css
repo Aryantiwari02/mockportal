@@ -1,0 +1,92 @@
+/* Home page — uses global.css design system */
+
+/* ── Hero ── */
+.hero .primary-button {
+  background: #e67e22;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,.3);
+  padding: 12px 24px;
+  font-size: 14.5px;
+}
+
+.hero .primary-button:hover {
+  background: #d35400;
+}
+
+.hero .secondary-button {
+  background: rgba(255,255,255,.1);
+  color: white;
+  border-color: rgba(255,255,255,.4);
+  padding: 12px 22px;
+  font-size: 14.5px;
+}
+
+.hero .secondary-button:hover {
+  background: rgba(255,255,255,.2);
+}
+
+.hero-disclaimer {
+  font-size: 12px !important;
+  color: rgba(255,255,255,.5) !important;
+  margin-top: 12px !important;
+  font-style: italic;
+}
+
+/* ── Section ── */
+.section {
+  padding: var(--space-xl) 0;
+}
+
+/* ── Service cards text alignment ── */
+.service-card h3 {
+  font-size: 1rem;
+  color: var(--clr-text);
+  margin: 6px 0 4px;
+}
+
+.service-card p {
+  font-size: 13px;
+  color: var(--clr-text-muted);
+  margin: 0;
+}
+
+/* ── Category section ── */
+.category-section {
+  background: var(--clr-navy-dark);
+  padding: var(--space-xl) 0;
+}
+
+.category-section .section-heading {
+  margin-bottom: var(--space-lg);
+  text-align: left;
+}
+
+.category-card {
+  cursor: pointer;
+  display: block;
+}
+
+/* ── Information box ── */
+.information-box {
+  display: flex;
+  gap: var(--space-xl);
+  align-items: flex-start;
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border-lt);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
+  border-left: 4px solid var(--clr-navy);
+  flex-wrap: wrap;
+}
+
+.information-list {
+  flex: 1;
+  min-width: 220px;
+}
+
+.info-disclaimer {
+  font-size: 12.5px !important;
+  color: var(--clr-text-light) !important;
+  font-style: italic;
+  margin: 8px 0 0 !important;
+}

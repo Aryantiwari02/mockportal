@@ -1,0 +1,90 @@
+/* ============================================================
+   Footer — Government Portal Style
+   ============================================================ */
+
+.footer-disclaimer-banner {
+  background: #1a2535;
+  color: rgba(255,255,255,.75);
+  font-size: 12.5px;
+  padding: 10px 0;
+  text-align: center;
+  border-bottom: 2px solid #e67e22;
+}
+
+.footer-disclaimer-banner strong {
+  color: #f59e0b;
+}
+
+.footer {
+  background: #0f1e32;
+  color: rgba(255,255,255,.8);
+  margin-top: auto;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 32px;
+  padding: 48px 0 32px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.footer-column h3 {
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e67e22;
+  display: inline-block;
+}
+
+.footer-column a {
+  display: block;
+  color: rgba(255,255,255,.65);
+  text-decoration: none;
+  font-size: 13.5px;
+  padding: 4px 0;
+  transition: color 0.15s;
+}
+
+.footer-column a:hover {
+  color: white;
+}
+
+.footer-column p {
+  color: rgba(255,255,255,.6);
+  font-size: 13px;
+  line-height: 1.65;
+  margin: 0 0 8px;
+}
+
+.footer-notice {
+  font-size: 12.5px !important;
+  color: rgba(255,255,255,.45) !important;
+  font-style: italic;
+}
+
+.footer-bottom {
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-bottom p {
+  margin: 0;
+  color: rgba(255,255,255,.4);
+  font-size: 12.5px;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    padding: 32px 0 24px;
+  }
+}

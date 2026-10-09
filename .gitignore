@@ -1,0 +1,56 @@
+# ============================================================
+# YojanaSaathi — Root .gitignore
+# ============================================================
+
+# ------ Python / Django ------
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Django database (NEVER commit real citizen data)
+backend/db.sqlite3
+datadump.json
+backend/datadump.json
+*.dump
+
+# Uploaded documents (contain citizen-submitted documents — must NOT be committed)
+backend/media/
+
+# Django collected static files
+backend/staticfiles/
+backend/static_root/
+
+# Django local config
+backend/.env
+backend/*.log
+
+# ------ Environment / Secrets ------
+.env
+.env.local
+.env.*.local
+*.env
+
+# ------ Node / Frontend ------
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
+# ------ macOS ------
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# ------ IDE ------
+.vscode/
+.idea/
+*.swp
+*.swo

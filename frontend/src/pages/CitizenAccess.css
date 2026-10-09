@@ -1,0 +1,238 @@
+/* ============================================================
+   Citizen Access / OTP Login — Government Portal Style
+   ============================================================ */
+
+.citizen-access-page {
+  min-height: 75vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl) var(--space-md);
+  background: linear-gradient(135deg, #f0f4f9 0%, #e8eef5 100%);
+}
+
+.citizen-access-card {
+  width: 100%;
+  max-width: 460px;
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border-lt);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-xl);
+  border-top: 4px solid var(--clr-navy);
+}
+
+/* ── Header ── */
+.citizen-access-header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.citizen-access-icon {
+  font-size: 48px;
+  margin-bottom: var(--space-md);
+  display: block;
+}
+
+.citizen-access-header h1 {
+  font-size: 1.5rem;
+  color: var(--clr-navy);
+  margin-bottom: 8px;
+}
+
+.citizen-access-header p {
+  font-size: 14px;
+  color: var(--clr-text-muted);
+  margin: 0;
+}
+
+/* ── Form ── */
+.citizen-access-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.citizen-access-form label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--clr-text);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.mobile-input-wrapper {
+  display: flex;
+  align-items: stretch;
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.mobile-input-wrapper:focus-within {
+  border-color: var(--clr-navy);
+  box-shadow: 0 0 0 3px rgba(15,52,96,.12);
+}
+
+.country-code {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  background: #f1f5f9;
+  color: var(--clr-text-muted);
+  font-size: 14px;
+  font-weight: 600;
+  border-right: 1px solid var(--clr-border);
+  white-space: nowrap;
+}
+
+.mobile-input-wrapper input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 11px 14px;
+  font-size: 15px;
+  color: var(--clr-text);
+  background: transparent;
+  width: 100%;
+}
+
+/* OTP input */
+.citizen-access-form input[type="text"] {
+  text-align: center;
+  font-size: 22px;
+  letter-spacing: 0.25em;
+  font-weight: 700;
+  color: var(--clr-navy);
+  padding: 12px;
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  width: 100%;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.citizen-access-form input[type="text"]:focus {
+  outline: none;
+  border-color: var(--clr-navy);
+  box-shadow: 0 0 0 3px rgba(15,52,96,.12);
+}
+
+/* ── Primary Button ── */
+.citizen-primary-button {
+  width: 100%;
+  padding: 13px;
+  background: var(--clr-navy);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+}
+
+.citizen-primary-button:hover:not(:disabled) {
+  background: var(--clr-navy-light);
+  transform: translateY(-1px);
+}
+
+.citizen-primary-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── OTP Sent Message ── */
+.otp-sent-message {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-sm);
+  padding: var(--space-md);
+  text-align: center;
+  font-size: 13.5px;
+}
+
+.otp-sent-message strong {
+  color: #166534;
+  font-size: 14px;
+}
+
+.otp-sent-message p {
+  margin: 6px 0 4px;
+  color: var(--clr-text-muted);
+}
+
+/* ── Action Buttons below OTP ── */
+.otp-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-top: 4px;
+}
+
+.text-button {
+  background: none;
+  border: none;
+  color: var(--clr-navy);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color var(--transition);
+}
+
+.text-button:hover { color: var(--clr-navy-light); }
+.text-button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Error / Success Messages ── */
+.citizen-error {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-left: 4px solid #ef4444;
+  color: #991b1b;
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 13.5px;
+}
+
+.citizen-success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-left: 4px solid #22c55e;
+  color: #166534;
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 13.5px;
+}
+
+/* ── Security Notice ── */
+.citizen-access-notice {
+  margin-top: var(--space-lg);
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 13px;
+}
+
+.citizen-access-notice strong {
+  display: block;
+  color: var(--clr-navy);
+  margin-bottom: 4px;
+}
+
+.citizen-access-notice p {
+  color: #1e40af;
+  margin: 0;
+  font-size: 12.5px;
+}
+
+/* ── Mobile ── */
+@media (max-width: 480px) {
+  .citizen-access-card {
+    padding: var(--space-lg);
+  }
+}

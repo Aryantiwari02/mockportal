@@ -1,0 +1,64 @@
+# ============================================================
+# Render Blueprint — YojanaSaathi backend + PostgreSQL
+# ============================================================
+# Deploy:  Render Dashboard → New → Blueprint → connect this repo.
+# Render runs `backend/build.sh`, then starts Gunicorn.
+#
+# After the frontend is live on Vercel, set these in the Render
+# dashboard (or here) to your deployed frontend origin:
+#   DJANGO_CORS_ALLOWED_ORIGINS   = https://<your-app>.vercel.app
+#   DJANGO_CSRF_TRUSTED_ORIGINS   = https://<your-app>.vercel.app
+# ============================================================
+
+services:
+  - type: web
+    name: yojanasaathi-backend
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: bash build.sh
+    startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+    healthCheckPath: /api/status/
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.13.11"
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: DJANGO_ALLOWED_HOSTS
+        value: ".onrender.com,localhost,127.0.0.1"
+      - key: DJANGO_SECURE_SSL_REDIRECT
+        value: "False"
+      - key: OTP_MODE
+        value: "demo"
+      - key: OTP_DEMO_CODE
+        value: "123456"
+      - key: TWILIO_ALLOWED_MOBILE
+        value: "7204058792"
+
+      # --- secrets: set these in the Render dashboard (prompted on first deploy) ---
+      - key: DJANGO_SECRET_KEY
+        sync: false
+      - key: DJANGO_CORS_ALLOWED_ORIGINS
+        sync: false
+      - key: DJANGO_CSRF_TRUSTED_ORIGINS
+        sync: false
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_VERIFY_SERVICE_SID
+        sync: false
+      - key: YOJANASAATHI_AGENT_API_KEY
+        sync: false
+
+      # Render injects the PostgreSQL connection string automatically
+      - key: DATABASE_URL
+        fromDatabase:
+          name: yojanasaathi-db
+          property: connectionString
+
+databases:
+  - name: yojanasaathi-db
+    plan: free
+    databaseName: yojanasaathi
+    user: yojanasaathi

@@ -1,0 +1,52 @@
+.info-page {
+  min-height: 100vh;
+  background: #f7f8fa;
+}
+
+.info-header {
+  background: #eef4fa;
+  border-bottom: 1px solid #d8e1ea;
+  padding: 50px 0;
+}
+
+.info-header h1 {
+  margin: 0 0 12px;
+  font-size: 36px;
+  color: #172333;
+}
+
+.info-header p {
+  margin: 0;
+  color: #536273;
+  line-height: 1.6;
+}
+
+.info-section {
+  padding: 45px 0 70px;
+}
+
+.info-card {
+  background: #ffffff;
+  border: 1px solid #dce3ea;
+  border-radius: 8px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+
+.info-card h2 {
+  margin: 0 0 10px;
+  color: #172333;
+  font-size: 21px;
+}
+
+.info-card p {
+  margin: 0;
+  color: #5d6978;
+  line-height: 1.7;
+}
+
+@media (max-width: 700px) {
+  .info-header h1 {
+    font-size: 30px;
+  }
+}

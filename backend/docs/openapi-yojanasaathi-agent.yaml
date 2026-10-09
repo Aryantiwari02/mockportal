@@ -1,0 +1,226 @@
+openapi: 3.0.3
+info:
+  title: Government Yojana Portal — YojanaSaathi AI Agent API
+  version: 1.0.0
+  description: >
+    Secure machine-to-machine REST API enabling the remote YojanaSaathi AI Agent
+    to discover government welfare schemes, retrieve requirements and eligibility rules,
+    assist citizens with draft applications, and track verification statuses through
+    short-lived citizen consent delegation.
+  contact:
+    name: YojanaSaathi Engineering Team
+    url: https://yojanasaathi.gov.in
+
+servers:
+  - url: https://api.yojanasaathi.gov.in/api/agent/v1
+    description: Production HTTPS Base URL Placeholder
+  - url: http://127.0.0.1:8000/api/agent/v1
+    description: Local Development Server
+
+components:
+  securitySchemes:
+    AgentApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Agent-API-Key
+      description: Cryptographically strong machine-to-machine Agent API key.
+    CitizenDelegationTokenAuth:
+      type: apiKey
+      in: header
+      name: X-Citizen-Delegation-Token
+      description: Short-lived scoped delegation token granted by a citizen.
+
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - code
+      properties:
+        error:
+          type: string
+          example: Invalid or revoked Agent API Key.
+        code:
+          type: string
+          example: AGENT_AUTHENTICATION_REQUIRED
+
+    SchemeSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          example: health-001
+        category:
+          type: string
+          example: Health
+        title:
+          type: string
+          example: Ayushman Bharat PM-JAY
+        short_description:
+          type: string
+          example: Comprehensive health protection coverage up to ₹5 lakh per family.
+        benefits:
+          type: array
+          items:
+            type: string
+        eligibility:
+          type: array
+          items:
+            type: string
+        updated_at:
+          type: string
+          format: date-time
+
+paths:
+  /schemes/:
+    get:
+      summary: List and Search Schemes
+      security:
+        - AgentApiKeyAuth: []
+      parameters:
+        - name: q
+          in: query
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of schemes
+        '401':
+          description: Missing or invalid Agent API key
+
+  /schemes/{scheme_id}/:
+    get:
+      summary: Scheme Details
+      security:
+        - AgentApiKeyAuth: []
+      parameters:
+        - name: scheme_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Scheme details
+        '404':
+          description: Scheme not found
+
+  /schemes/{scheme_id}/requirements/:
+    get:
+      summary: Scheme Form Fields & Documents
+      security:
+        - AgentApiKeyAuth: []
+      parameters:
+        - name: scheme_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Scheme requirements
+
+  /schemes/{scheme_id}/eligibility/:
+    get:
+      summary: Scheme Eligibility Rules & Instructions
+      security:
+        - AgentApiKeyAuth: []
+      parameters:
+        - name: scheme_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Eligibility rules
+
+  /citizen/applications/draft/:
+    post:
+      summary: Create or Update Draft Application
+      security:
+        - AgentApiKeyAuth: []
+          CitizenDelegationTokenAuth: []
+      responses:
+        '200':
+          description: Draft updated
+        '201':
+          description: Draft created
+        '403':
+          description: Citizen delegation required
+
+  /citizen/applications/:
+    get:
+      summary: Citizen Applications and Statuses
+      security:
+        - AgentApiKeyAuth: []
+          CitizenDelegationTokenAuth: []
+      responses:
+        '200':
+          description: List of applications
+        '403':
+          description: Citizen delegation required
+
+  /citizen/applications/{application_number}/:
+    get:
+      summary: Citizen Application Detail
+      security:
+        - AgentApiKeyAuth: []
+          CitizenDelegationTokenAuth: []
+      parameters:
+        - name: application_number
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Application detail
+        '404':
+          description: Not found
+
+  /citizen/applications/{application_number}/documents/:
+    get:
+      summary: Document Verification Statuses
+      security:
+        - AgentApiKeyAuth: []
+          CitizenDelegationTokenAuth: []
+      parameters:
+        - name: application_number
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Document verification statuses
+
+  /citizen/applications/{application_number}/history/:
+    get:
+      summary: Application History & Lifecycle
+      security:
+        - AgentApiKeyAuth: []
+          CitizenDelegationTokenAuth: []
+      parameters:
+        - name: application_number
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Application history
+
+  /citizen/notifications/:
+    get:
+      summary: Citizen Notifications
+      security:
+        - AgentApiKeyAuth: []
+          CitizenDelegationTokenAuth: []
+      responses:
+        '200':
+          description: Citizen notifications

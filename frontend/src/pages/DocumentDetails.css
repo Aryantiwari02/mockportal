@@ -1,0 +1,174 @@
+.document-details-page {
+  background: #f7f8fa;
+  min-height: 100vh;
+}
+
+.document-details-header {
+  padding: 40px 0 55px;
+
+  background: #eef3f8;
+
+  border-bottom: 1px solid #d8e0e8;
+}
+
+.document-details-header .back-link {
+  display: inline-block;
+  margin-bottom: 30px;
+
+  color: #1f5b95;
+  text-decoration: none;
+
+  font-size: 14px;
+}
+
+.document-details-header > .container > span {
+  color: #1f5b95;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.document-details-header h1 {
+  margin: 10px 0;
+
+  color: #172333;
+
+  font-size: 42px;
+}
+
+.document-details-header p {
+  max-width: 720px;
+
+  color: #596879;
+
+  line-height: 1.7;
+  font-size: 17px;
+}
+
+
+/* Content */
+
+.document-details-content {
+  padding: 55px 0;
+}
+
+.document-details-layout {
+  display: grid;
+
+  grid-template-columns: 1fr 320px;
+
+  gap: 45px;
+}
+
+.document-info-card {
+  margin-bottom: 20px;
+
+  padding: 30px;
+
+  background: white;
+
+  border: 1px solid #dce3ea;
+}
+
+.document-info-card h2 {
+  margin-top: 0;
+
+  padding-bottom: 14px;
+
+  border-bottom: 1px solid #e4e8ed;
+
+  color: #172333;
+
+  font-size: 23px;
+}
+
+.document-info-card p,
+.document-info-card li {
+  color: #5e6c7b;
+
+  line-height: 1.8;
+}
+
+.document-info-card ul {
+  padding-left: 22px;
+}
+
+.document-info-card li {
+  margin-bottom: 9px;
+}
+
+
+/* Sidebar */
+
+.document-side-card,
+.document-side-warning {
+  padding: 25px;
+
+  background: white;
+
+  border: 1px solid #dce3ea;
+
+  margin-bottom: 20px;
+}
+
+.document-side-card > span {
+  color: #1f5b95;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+}
+
+.document-side-card h3 {
+  margin: 12px 0;
+
+  font-size: 23px;
+
+  color: #1d2938;
+}
+
+.document-side-card p,
+.document-side-warning p {
+  color: #657282;
+
+  line-height: 1.6;
+
+  font-size: 14px;
+}
+
+.document-side-warning {
+  background: #fffaf0;
+
+  border-color: #ead9ad;
+}
+
+.document-side-warning strong {
+  color: #57430b;
+}
+
+.document-not-found {
+  min-height: 500px;
+  padding-top: 80px;
+}
+
+.document-not-found a {
+  color: #123b6d;
+}
+
+
+@media (max-width: 800px) {
+
+  .document-details-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .document-details-header h1 {
+    font-size: 34px;
+  }
+
+}
