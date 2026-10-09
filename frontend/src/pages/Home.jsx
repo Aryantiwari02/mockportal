@@ -1,81 +1,105 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "../i18n";
+import { getSchemes } from "../api";
 import "./Home.css";
 
+const HOW_TO_APPLY = [
+  { title: "Check Eligibility", desc: "Review the eligibility criteria listed for the scheme." },
+  { title: "Prepare Documents", desc: "Keep identity, residence, income and scheme-specific proofs ready." },
+  { title: "Fill the Application", desc: "Complete the scheme-specific online application form." },
+  { title: "Submit & Track", desc: "Submit the form, save the reference number and track the status." },
+];
+
 function Home() {
-  const { t } = useTranslation();
+  const { t, getLocalizedScheme } = useTranslation();
+  const navigate = useNavigate();
+
+  const [query, setQuery] = useState("");
+  const [schemes, setSchemes] = useState([]);
+  const [loadingSchemes, setLoadingSchemes] = useState(true);
+  const [activeCategory, setActiveCategory] = useState("All");
+
+  useEffect(() => {
+    getSchemes()
+      .then((data) => setSchemes(Array.isArray(data) ? data : []))
+      .catch((err) => {
+        console.error(err);
+        setSchemes([]);
+      })
+      .finally(() => setLoadingSchemes(false));
+  }, []);
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    const q = query.trim();
+    navigate(q ? `/schemes?q=${encodeURIComponent(q)}` : "/schemes");
+  };
+
+  const localized = schemes.map((scheme) => getLocalizedScheme(scheme));
+  const categories = Array.from(
+    new Set(localized.map((scheme) => scheme.category).filter(Boolean))
+  );
+  const visibleSchemes =
+    activeCategory === "All"
+      ? localized
+      : localized.filter((scheme) => scheme.category === activeCategory);
 
   return (
     <div className="home-page">
 
       {/* ── Hero ── */}
-      <section className="hero" aria-labelledby="hero-heading">
-        <div className="container hero-content">
+      <section className="home-hero" aria-labelledby="hero-heading">
+        <div className="container home-hero-inner">
 
-          <div className="hero-text">
-            <span className="hero-label">
-              {t("home.heroTag")}
-            </span>
+          <div className="home-hero-text">
+            <span className="hero-label">{t("home.heroTag")}</span>
 
-            <h1 id="hero-heading">
-              {t("home.heroTitle")}
-            </h1>
+            <h1 id="hero-heading">{t("home.heroTitle")}</h1>
 
             <p>{t("home.heroSubtitle")}</p>
 
-            <div className="hero-actions">
-              <Link
-                to="/schemes"
-                className="primary-button"
-                data-testid="hero-view-schemes-button"
-              >
-                {t("home.viewAllSchemes")}
-              </Link>
+            <form className="hero-search" onSubmit={handleSearch} role="search">
+              <label className="sr-only" htmlFor="hero-search-input">
+                {t("home.searchButton")}
+              </label>
+              <input
+                id="hero-search-input"
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder={t("home.searchPlaceholder")}
+                autoComplete="off"
+              />
+              <button type="submit">{t("home.searchButton")}</button>
+            </form>
 
-              <Link
-                to="/citizen-access"
-                className="secondary-button"
-                data-testid="hero-citizen-access-button"
-              >
-                🔐 {t("nav.citizenAccess")}
-              </Link>
+            <div className="hero-links">
+              <Link to="/schemes">{t("home.viewAllSchemes")}</Link>
+              <Link to="/citizen-services/scheme-finder">{t("services.schemeFinderTitle")}</Link>
+              <Link to="/documents">{t("nav.documents")}</Link>
             </div>
-
-            {/* Disclaimer in hero */}
-            <p className="hero-disclaimer">
-              ⓘ This is a demonstration portal. Not an official government website.
-            </p>
           </div>
 
-          <div className="hero-panel" aria-label="Quick access links">
-            <h3>{t("home.quickAccess")}</h3>
-
-            <Link to="/schemes?category=health">
-              🏥 {t("home.quickHealth")}
-            </Link>
-
-            <Link to="/schemes?category=pension">
-              🧓 {t("home.quickPension")}
-            </Link>
-
-            <Link to="/documents">
-              📄 {t("home.quickDocuments")}
-            </Link>
-
-            <Link to="/citizen-services/scheme-finder">
-              🔎 {t("services.schemeFinderTitle")}
-            </Link>
-
-            <Link to="/my-services">
-              📋 {t("nav.applications")}
-            </Link>
-          </div>
+          <aside className="home-hero-aside" aria-label="How to apply">
+            <h2>{t("home.howToApply")}</h2>
+            <ol className="how-steps">
+              {HOW_TO_APPLY.map((step, index) => (
+                <li key={step.title}>
+                  <span className="how-step-num">{index + 1}</span>
+                  <span>
+                    <strong>{step.title}</strong>
+                    <em>{step.desc}</em>
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </aside>
 
         </div>
       </section>
 
-
-      {/* ── Quick Services ── */}
+      {/* ── Citizen Services ── */}
       <section className="section" aria-labelledby="services-heading">
         <div className="container">
 
@@ -90,10 +114,9 @@ function Home() {
             <Link
               to="/schemes"
               className="service-card"
-              style={{ textDecoration: "none", color: "inherit" }}
               data-testid="home-service-schemes"
             >
-              <span className="service-icon">📋</span>
+              <span className="service-card-index">01</span>
               <h3>{t("schemes.title")}</h3>
               <p>{t("schemes.subtitle")}</p>
             </Link>
@@ -101,10 +124,9 @@ function Home() {
             <Link
               to="/citizen-services/scheme-finder"
               className="service-card"
-              style={{ textDecoration: "none", color: "inherit" }}
               data-testid="home-service-finder"
             >
-              <span className="service-icon">🔎</span>
+              <span className="service-card-index">02</span>
               <h3>{t("services.schemeFinderTitle")}</h3>
               <p>{t("services.schemeFinderDesc")}</p>
             </Link>
@@ -112,10 +134,9 @@ function Home() {
             <Link
               to="/documents"
               className="service-card"
-              style={{ textDecoration: "none", color: "inherit" }}
               data-testid="home-service-documents"
             >
-              <span className="service-icon">📄</span>
+              <span className="service-card-index">03</span>
               <h3>{t("documents.title")}</h3>
               <p>{t("documents.subtitle")}</p>
             </Link>
@@ -123,10 +144,9 @@ function Home() {
             <Link
               to="/help"
               className="service-card"
-              style={{ textDecoration: "none", color: "inherit" }}
               data-testid="home-service-help"
             >
-              <span className="service-icon">❓</span>
+              <span className="service-card-index">04</span>
               <h3>{t("help.title")}</h3>
               <p>{t("help.subtitle")}</p>
             </Link>
@@ -136,83 +156,100 @@ function Home() {
         </div>
       </section>
 
-
-      {/* ── Scheme Categories ── */}
-      <section className="category-section" aria-labelledby="categories-heading">
+      {/* ── Browse Schemes ── */}
+      <section className="section section-alternate" aria-labelledby="browse-heading">
         <div className="container">
 
           <div className="section-heading">
-            <span className="section-label" style={{ background: "rgba(255,255,255,.12)", color: "rgba(255,255,255,.85)" }}>
-              {t("home.categoriesTitle")}
-            </span>
-            <h2 id="categories-heading" style={{ color: "white" }}>
-              {t("home.featuredTitle")}
-            </h2>
-            <p style={{ color: "rgba(255,255,255,.7)" }}>
-              {t("home.featuredSubtitle")}
-            </p>
+            <span className="section-label">{t("home.categoriesTitle")}</span>
+            <h2 id="browse-heading">{t("home.featuredTitle")}</h2>
+            <p>{t("home.featuredSubtitle")}</p>
           </div>
 
-          <div className="category-grid">
-
-            <Link
-              to="/schemes?category=health"
-              className="category-card"
-              style={{ textDecoration: "none" }}
-              data-testid="category-health"
+          <div className="filter-tabs" role="tablist" aria-label={t("home.categoriesTitle")}>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeCategory === "All"}
+              className={activeCategory === "All" ? "filter-tab active" : "filter-tab"}
+              onClick={() => setActiveCategory("All")}
             >
-              <span>01</span>
-              <h3>{t("home.categoryHealth")}</h3>
-              <p>{t("home.categoryHealthDesc")}</p>
-            </Link>
+              {t("schemes.allCategories")}
+            </button>
 
-            <Link
-              to="/schemes?category=pension"
-              className="category-card"
-              style={{ textDecoration: "none" }}
-              data-testid="category-pension"
-            >
-              <span>02</span>
-              <h3>{t("home.categoryPension")}</h3>
-              <p>{t("home.categoryPensionDesc")}</p>
-            </Link>
+            {categories.map((category) => (
+              <button
+                key={category}
+                type="button"
+                role="tab"
+                aria-selected={activeCategory === category}
+                className={activeCategory === category ? "filter-tab active" : "filter-tab"}
+                onClick={() => setActiveCategory(category)}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
 
-            <Link
-              to="/services"
-              className="category-card"
-              style={{ textDecoration: "none" }}
-              data-testid="category-services"
-            >
-              <span>03</span>
-              <h3>{t("home.categoryServices")}</h3>
-              <p>{t("home.categoryServicesDesc")}</p>
-            </Link>
+          {loadingSchemes ? (
+            <p className="home-loading">{t("common.loading")}</p>
+          ) : visibleSchemes.length === 0 ? (
+            <p className="home-loading">{t("schemes.noResults")}</p>
+          ) : (
+            <div className="scheme-grid">
+              {visibleSchemes.map((scheme) => (
+                <article className="scheme-card" key={scheme.id}>
 
+                  <span className="scheme-category">{scheme.category}</span>
+
+                  <h3 className="scheme-card-title">{scheme.title}</h3>
+
+                  <p>{scheme.short_description}</p>
+
+                  <ul className="scheme-card-meta">
+                    <li>{scheme.eligibility?.length || 0} {t("schemes.eligibilityPoints")}</li>
+                    <li>{scheme.documents?.length || 0} {t("schemes.documentsLabel")}</li>
+                  </ul>
+
+                  <div className="scheme-card-actions">
+                    <Link
+                      to={`/schemes/${scheme.id}`}
+                      className="text-link"
+                      data-testid={`scheme-view-details-${scheme.id}`}
+                    >
+                      {t("home.viewDetails")}
+                    </Link>
+                    <Link to={`/apply/${scheme.id}`} className="scheme-button">
+                      {t("home.applyNow")}
+                    </Link>
+                  </div>
+
+                </article>
+              ))}
+            </div>
+          )}
+
+          <div className="browse-footer">
+            <Link to="/schemes" className="secondary-button">
+              {t("home.viewAllSchemes")}
+            </Link>
           </div>
 
         </div>
       </section>
 
-
-      {/* ── Important Information Box ── */}
-      <section className="section" aria-label="Portal information">
+      {/* ── Notice ── */}
+      <section className="section" aria-label="Portal notice">
         <div className="container">
           <div className="information-box">
-
             <div>
               <span className="section-label">{t("home.infoBoxLabel")}</span>
               <h2>{t("home.infoBoxTitle")}</h2>
             </div>
-
             <div className="information-list">
               <p>{t("home.infoBoxDesc")}</p>
-              <p className="info-disclaimer">
-                All scheme data shown in this portal is for demonstration. Verify
-                eligibility and benefit amounts directly with the responsible government
-                authority before applying.
-              </p>
+              <p className="info-disclaimer">{t("footer.disclaimerText")}</p>
             </div>
-
           </div>
         </div>
       </section>

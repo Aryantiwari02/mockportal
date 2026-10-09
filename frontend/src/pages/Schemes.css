@@ -1,11 +1,13 @@
-/* Schemes listing page — uses global.css card/grid system */
+/* ============================================================
+   Schemes Directory — Government Portal Style
+   ============================================================ */
 
 .page-section {
   padding: var(--space-xl) 0;
 }
 
 .page-heading {
-  margin-bottom: var(--space-xl);
+  margin-bottom: var(--space-lg);
   padding-bottom: var(--space-lg);
   border-bottom: 1px solid var(--clr-border-lt);
 }
@@ -18,7 +20,66 @@
   font-size: 15px;
   color: var(--clr-text-muted);
   margin: 0;
-  max-width: 680px;
+  max-width: 720px;
+}
+
+/* ── Toolbar ── */
+.schemes-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.schemes-search {
+  display: flex;
+  align-items: stretch;
+  border: 1.5px solid var(--clr-border);
+  border-radius: 5px;
+  overflow: hidden;
+  background: #fff;
+  min-width: 300px;
+  flex: 1;
+  max-width: 460px;
+}
+
+.schemes-search input {
+  flex: 1;
+  border: none;
+  padding: 11px 14px;
+  font-size: 14px;
+  min-width: 0;
+}
+
+.schemes-search input:focus {
+  outline: none;
+}
+
+.schemes-search button {
+  border: none;
+  background: var(--clr-navy);
+  color: #fff;
+  padding: 0 22px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.schemes-search button:hover {
+  background: var(--clr-navy-light);
+}
+
+.schemes-toolbar .filter-tabs {
+  margin-bottom: 0;
+}
+
+.results-count {
+  font-size: 13px;
+  color: var(--clr-text-light);
+  margin: 0 0 var(--space-md);
 }
 
 .error-message {
@@ -30,8 +91,22 @@
   font-size: 14px;
 }
 
+.empty-message {
+  text-align: center;
+  padding: var(--space-2xl) 0;
+  color: var(--clr-text-muted);
+  background: #fff;
+  border: 1px dashed var(--clr-border);
+  border-radius: var(--radius-md);
+}
+
 /* Scheme card bottom action row */
 .scheme-card .scheme-button {
   align-self: flex-start;
-  margin-top: auto;
+}
+
+@media (max-width: 700px) {
+  .schemes-search {
+    max-width: none;
+  }
 }

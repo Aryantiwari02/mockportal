@@ -2,87 +2,133 @@
    Header — Government Portal Style
    ============================================================ */
 
-/* ── Demo Disclaimer Bar ── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Demonstration Notice Bar ── */
 .demo-disclaimer-bar {
   background: #fffbeb;
-  border-bottom: 2px solid #f59e0b;
-  padding: 7px 16px;
+  border-bottom: 1px solid #fcd34d;
+  padding: 6px 16px;
   text-align: center;
-  font-size: 12.5px;
+  font-size: 12px;
   color: #78350f;
   font-weight: 500;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
 }
 
 /* ── Utility Topbar ── */
 .gov-topbar {
-  background: #1a2535;
-  color: rgba(255,255,255,.85);
+  background: #0b2340;
+  color: rgba(255, 255, 255, .82);
   font-size: 12.5px;
 }
 
 .gov-topbar-inner {
-  min-height: 36px;
+  min-height: 34px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
 }
 
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topbar-lang {
+  font-weight: 700;
+  color: #fff;
+}
+
+.topbar-divider {
+  color: rgba(255, 255, 255, .3);
+}
+
 .topbar-right {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .skip-link {
-  position: absolute;
-  left: -9999px;
-  top: auto;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  color: white;
+  color: rgba(255, 255, 255, .82);
   text-decoration: none;
-}
-
-.skip-link:focus {
-  position: static;
-  width: auto;
-  height: auto;
-  background: #1a2535;
-  padding: 4px 10px;
+  padding: 2px 6px;
   border-radius: 3px;
 }
 
-.topbar-right button {
-  border: 1px solid rgba(255,255,255,.25);
+.skip-link:hover {
+  background: rgba(255, 255, 255, .12);
+  color: #fff;
+}
+
+.font-size-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.font-size-control button {
+  border: 1px solid rgba(255, 255, 255, .25);
   background: transparent;
-  color: rgba(255,255,255,.85);
-  padding: 3px 8px;
+  color: rgba(255, 255, 255, .85);
+  padding: 2px 7px;
   border-radius: 3px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 11.5px;
   transition: background 0.15s;
 }
 
-.topbar-right button:hover {
-  background: rgba(255,255,255,.12);
+.font-size-control button:hover {
+  background: rgba(255, 255, 255, .15);
+}
+
+.language-inline select {
+  width: auto;
+  padding: 2px 6px;
+  height: 24px;
+  font-size: 12px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, .25);
+  background: rgba(255, 255, 255, .08);
+  color: #fff;
+  cursor: pointer;
+}
+
+.language-inline select option {
+  color: #1a2535;
 }
 
 /* ── Branding ── */
 .branding {
-  background: white;
+  background: #ffffff;
   border-bottom: 1px solid #e2e8f0;
 }
 
 .branding-inner {
-  min-height: 88px;
+  min-height: 94px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  padding: 10px 0;
+  padding: 12px 0;
 }
 
 .brand {
@@ -91,80 +137,82 @@
   gap: 14px;
   text-decoration: none;
   color: inherit;
+  flex-shrink: 0;
 }
 
-.emblem-placeholder {
-  width: 58px;
-  height: 58px;
-  border: 1px solid #e2e8f0;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 29px;
+.emblem-svg {
   flex-shrink: 0;
 }
 
 .brand-title {
-  font-size: 22px;
+  font-size: 23px;
   font-weight: 700;
   color: #0f3460;
-  line-height: 1.2;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
 }
 
 .brand-subtitle {
   margin-top: 3px;
   color: #566070;
-  font-size: 13px;
+  font-size: 12.5px;
 }
 
-/* ── Header Actions ── */
+/* ── Header Search ── */
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
-.language-control {
+.header-search {
   display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.language-control label {
-  font-size: 13px;
-  color: #566070;
-  white-space: nowrap;
-}
-
-.language-control select {
-  min-width: 120px;
-  height: 38px;
-  padding: 0 10px;
-  border: 1.5px solid #cbd5e1;
+  align-items: stretch;
+  border: 1.5px solid #0f3460;
   border-radius: 4px;
-  background: white;
-  color: #1a2535;
+  overflow: hidden;
+  background: #fff;
+}
+
+.header-search input {
+  width: 260px;
+  max-width: 40vw;
+  padding: 9px 12px;
+  border: none;
   font-size: 13.5px;
+  background: #fff;
+}
+
+.header-search input:focus {
+  outline: none;
+}
+
+.header-search button {
+  border: none;
+  background: #0f3460;
+  color: #fff;
+  padding: 0 18px;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
+  transition: background 0.15s;
 }
 
-.language-control select:focus {
-  outline: 2px solid #0f3460;
-  outline-offset: 1px;
-  border-color: #0f3460;
+.header-search button:hover {
+  background: #1a4a7a;
 }
 
-/* ── Citizen Access Links (header) ── */
+/* ── Citizen Access Links ── */
 .citizen-access-link,
 .citizen-dash-link {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 14px;
+  padding: 9px 16px;
   background: #0f3460;
-  color: white;
+  color: #fff;
   border-radius: 4px;
   font-size: 13px;
   font-weight: 600;
@@ -185,7 +233,7 @@
 }
 
 .btn-logout-header {
-  padding: 7px 13px;
+  padding: 8px 13px;
   background: transparent;
   color: #566070;
   border: 1.5px solid #cbd5e1;
@@ -202,7 +250,7 @@
   color: #991b1b;
 }
 
-/* ── Main Navigation ── */
+/* ── Main Tab Navigation ── */
 .main-nav {
   background: #0f3460;
   border-bottom: 3px solid #e67e22;
@@ -210,49 +258,126 @@
 
 .nav-inner {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   overflow-x: auto;
+  scrollbar-width: thin;
 }
 
-.nav-inner a {
-  color: rgba(255,255,255,.88);
+.nav-item {
+  position: relative;
+  display: flex;
+}
+
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: rgba(255, 255, 255, .86);
   text-decoration: none;
-  padding: 13px 16px;
+  padding: 14px 18px;
   font-size: 13.5px;
   font-weight: 500;
-  transition: background 0.15s, color 0.15s;
   white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
 }
 
-.nav-inner a:hover,
-.nav-inner a.active {
-  background: rgba(255,255,255,.1);
-  color: white;
+.nav-link:hover {
+  background: rgba(255, 255, 255, .1);
+  color: #fff;
 }
 
-/* ── Mobile ── */
-@media (max-width: 900px) {
+.nav-link.active {
+  background: rgba(255, 255, 255, .14);
+  color: #fff;
+  font-weight: 600;
+}
 
+.nav-link.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 3px;
+  background: #e67e22;
+}
+
+.caret {
+  font-size: 9px;
+  opacity: .8;
+}
+
+/* ── Dropdown ── */
+.nav-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 210px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-top: 3px solid #e67e22;
+  box-shadow: var(--shadow-md);
+  padding: 6px 0;
+  z-index: 60;
+  display: none;
+  flex-direction: column;
+}
+
+.nav-item.has-dropdown:hover .nav-dropdown,
+.nav-item.has-dropdown:focus-within .nav-dropdown {
+  display: flex;
+}
+
+.nav-dropdown a {
+  color: #1a2535;
+  text-decoration: none;
+  padding: 9px 18px;
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: background 0.12s, color 0.12s;
+}
+
+.nav-dropdown a:hover {
+  background: #f1f5f9;
+  color: #0f3460;
+}
+
+/* ── Responsive ── */
+@media (max-width: 980px) {
   .branding-inner {
     flex-direction: column;
-    align-items: flex-start;
-    padding: 14px 0;
-    min-height: auto;
+    align-items: stretch;
     gap: 14px;
+    padding: 16px 0;
+    min-height: auto;
   }
 
   .header-actions {
-    width: 100%;
+    justify-content: space-between;
   }
 
-  .nav-inner {
+  .header-search {
+    flex: 1;
+  }
+
+  .header-search input {
     width: 100%;
+    max-width: none;
   }
 
   .gov-topbar-inner {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-wrap: wrap;
     padding: 6px 0;
     gap: 6px;
   }
+}
+
+@media (max-width: 600px) {
+  .brand-title { font-size: 19px; }
+  .header-actions { flex-direction: column; align-items: stretch; }
+  .header-search input { max-width: none; }
+  .citizen-access-link,
+  .citizen-dash-link { justify-content: center; }
+  .language-inline select { max-width: 120px; }
 }

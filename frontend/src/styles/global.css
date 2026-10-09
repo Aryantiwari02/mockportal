@@ -555,6 +555,85 @@ textarea:focus {
   color: var(--clr-text-muted);
 }
 
+/* ------ Category / Filter Tabs ------ */
+.filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: var(--space-lg);
+}
+
+.filter-tab {
+  background: #fff;
+  border: 1.5px solid var(--clr-border);
+  color: var(--clr-text-muted);
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.filter-tab:hover {
+  border-color: var(--clr-navy);
+  color: var(--clr-navy);
+}
+
+.filter-tab.active {
+  background: var(--clr-navy);
+  border-color: var(--clr-navy);
+  color: #fff;
+}
+
+/* ------ Scheme Card Enhancements ------ */
+.scheme-card-title {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin: 4px 0;
+  line-height: 1.35;
+}
+
+.scheme-card-meta {
+  list-style: none;
+  margin: 0;
+  padding: 10px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-top: 1px solid var(--clr-border-lt);
+}
+
+.scheme-card-meta li {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--clr-navy);
+  background: #eff6ff;
+  border-radius: 3px;
+  padding: 3px 9px;
+}
+
+.scheme-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: var(--space-sm);
+}
+
+.text-link {
+  color: var(--clr-navy);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.text-link:hover {
+  text-decoration: underline;
+}
+
 /* ------ Responsive ------ */
 @media (max-width: 768px) {
   .hero-content {
