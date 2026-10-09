@@ -1,0 +1,17 @@
+{
+  "name": "yojanasaathi-agent-proxy",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Server-side proxy that lets another website use the YojanaSaathi Agent API without exposing the agent key.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
